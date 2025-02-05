@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ActModel</title>
-<style type="text/css">
-body{
-		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-		 Helvetica, Arial, "Lucida Grande", sans-serif;
-	 padding : 15px;
-	 max-width: 600px;
-	 margin: auto;
-}
-td {
-	 padding: 10px;
-	 vertical-align: top;
-}
-</style>
+let CPM = require("../../build/artistoo-cjs.js")
 
-
-<script src="./artistoo.js"></script>
-<script src="./fpsmeter.min.js"></script>
-<script>
-"use strict"
-
-
-/*	----------------------------------
-	CONFIGURATION SETTINGS
-	----------------------------------
-*/
 let config = {
 
 	// Grid settings
@@ -48,7 +22,7 @@ let config = {
 		J: [[0,20,0], [20,0,0], [0,0,0]],
 		
 		// VolumeConstraint parameters
-		LAMBDA_V: [0,50,200],					// VolumeConstraint importance per cellkind
+		LAMBDA_V: [0,50,50],					// VolumeConstraint importance per cellkind
 		V: [0,200,100],							// Target volume of each cellkind
 		
 		// PerimeterConstraint parameters
@@ -77,8 +51,7 @@ let config = {
 		// Visualization
 		CANVASCOLOR : "eaecef",
 		CELLCOLOR : ["000000", "A020F0"],
-		SHOWBORDERS : [true,true,true,true],		// Should cellborders be displayed?
-		BORDERCOL : ["DDDDDD","DDDDDD","DDDDDD","DDDDDD"],
+		BORDERCOLOR: ["ffffff","ffffff"],
 		ACTCOLOR : [true],					// Should pixel activity values be displayed?
 		SHOWBORDERS : [true],				// Should cellborders be displayed?
 		zoom : 2,							// zoom in on canvas with this factor.
@@ -97,61 +70,37 @@ let config = {
 	}
 	
 }
-/*	---------------------------------- */
-let sim, meter
 
-
-function initialize(){
-	let custommethods = {
-		initializeGrid : initializeGrid
-	}
-
-	sim = new CPM.Simulation( config, custommethods )
-
-
-	meter = new FPSMeter({left:"auto", right:"5px"})
-	step()
-}
 
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
 }
 
 function initializeGrid(){
-
 	// add the initializer if not already there
 	if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
 
 	// Seed epidermal cell layer
-	let rows = 10
-	let cols = 10
+	let rows = 8
+	let cols = 16
 	for( var i = Math.floor((this.C.extents[0]/cols)/2) ; i < this.C.extents[0] ; i += Math.floor(this.C.extents[0]/cols) ){
 		for( var j = Math.floor((this.C.extents[1]/rows)/2) ; j < this.C.extents[1] ; j += Math.floor(this.C.extents[1]/rows) ){
 			console.log(i,j)
 			this.gm.seedCellAt( 2, [i,j] )
 		}
 	}
-	let cellstomake = 1
+	let cellstomake = 50
 	while (cellstomake>0){
 		this.gm.seedCellAt( 1, [getRandomInt(200), getRandomInt(200)] )
 		cellstomake-=1
 	}
 }
 
-function step(){
-	sim.step()
-	meter.tick()
-	if( sim.conf["RUNTIME_BROWSER"] == "Inf" | sim.time+1 < sim.conf["RUNTIME_BROWSER"] ){
-		requestAnimationFrame( step )
-	}
+let custommethods = {
+	initializeGrid : initializeGrid
 }
 
+let sim = new CPM.Simulation( config, custommethods )
 
-</script>
-</head>
-<body onload="initialize()">
- 
- <h1>The Act-CPM</h1>
- <p>Model of a migrating cell.</p> 
-</body>
-</html>
+
+sim.run()
