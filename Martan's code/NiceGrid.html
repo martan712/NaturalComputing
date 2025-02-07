@@ -45,7 +45,7 @@ let config = {
 		// First value is always cellkind 0 (the background) and is often not used.
 				
 		// Adhesion parameters:
-		J: [[0,20,0], [20,0,0], [0,0,0]],
+		J: [[0,20,0], [20,0,0], [0,10,0]],
 		
 		// VolumeConstraint parameters
 		LAMBDA_V: [0,50,50],					// VolumeConstraint importance per cellkind
@@ -122,15 +122,15 @@ function initializeGrid(){
 	if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
 
 	// Seed epidermal cell layer
-	let rows = 12
-	let cols = 12
+	let rows = 14
+	let cols = 14
 	for( var i = Math.floor((this.C.extents[0]/cols)/2) ; i < this.C.extents[0] ; i += Math.floor(this.C.extents[0]/cols) ){
 		for( var j = Math.floor((this.C.extents[1]/rows)/2) ; j < this.C.extents[1] ; j += Math.floor(this.C.extents[1]/rows) ){
 			console.log(i,j)
 			this.gm.seedCellAt( 2, [i,j] )
 		}
 	}
-	let cellstomake = 30
+	let cellstomake = 60
 	while (cellstomake>0){
 		this.gm.seedCellAt( 1, [getRandomInt(200), getRandomInt(200)] )
 		cellstomake-=1
