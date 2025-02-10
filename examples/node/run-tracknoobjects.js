@@ -30,7 +30,7 @@ let config = {
         SAVEIMG : true,					// Should a png image of the grid be saved
                                             // during the simulation?
         IMGFRAMERATE : 100,					// If so, do this every <IMGFRAMERATE> MCS.
-        SAVEPATH : "../node/output/img/trackobstacles"+process.argv[2],	// ... And save the image in this folder.
+        SAVEPATH : "../node/output/img/tracknoobstacles"+process.argv[2],	// ... And save the image in this folder.
         EXPNAME : "trackposition",					// Used for the filename of output images.
         
         // Note that we set this to true for the browser to see the
@@ -81,7 +81,7 @@ function logStats() {
             if (cid == 1){
                 let average_position = allpercentages[cid]
                 const fs = require('fs');
-                fs.appendFileSync('../node/output/img/trackobstacles'+process.argv[2]+'/position.txt', average_position+"\n");
+                fs.appendFileSync('../node/output/img/tracknoobstacles'+process.argv[2]+'/position.txt', average_position+"\n");
                 console.log(average_position)
             }
         }
@@ -106,8 +106,8 @@ function initializeGrid(){
     }
 
     // Seed grid
-    let rows = 10
-	let cols = 10
+    let rows = 0
+	let cols = 0
 	for( var i = Math.floor((this.C.extents[0]/cols)/2) ; i < this.C.extents[0] ; i += Math.floor(this.C.extents[0]/cols) ){
 		for( var j = Math.floor((this.C.extents[1]/rows)/2) ; j < this.C.extents[1] ; j += Math.floor(this.C.extents[1]/rows) ){
 			for( let x = 0; x < 200; x+=20){

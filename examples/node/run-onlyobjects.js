@@ -20,8 +20,8 @@ let config = {
     simsettings : {
         NRCELLS : [1,1,1], //1500						
         BURNIN : 500,
-        RUNTIME : 5000,
-        CANVASCOLOR : "eaecef",
+        RUNTIME : 1,
+        CANVASCOLOR : "000000",
         CELLCOLOR : ["000000","000000", "CCCCCC"],
         ACTCOLOR : [true,false,false],					
         SHOWBORDERS : [false,true,false],		
@@ -30,7 +30,7 @@ let config = {
         SAVEIMG : true,					// Should a png image of the grid be saved
                                             // during the simulation?
         IMGFRAMERATE : 100,					// If so, do this every <IMGFRAMERATE> MCS.
-        SAVEPATH : "../node/output/img/trackobstacles"+process.argv[2],	// ... And save the image in this folder.
+        SAVEPATH : "../node/output/img/onlyobstacles15x15",	// ... And save the image in this folder.
         EXPNAME : "trackposition",					// Used for the filename of output images.
         
         // Note that we set this to true for the browser to see the
@@ -81,7 +81,7 @@ function logStats() {
             if (cid == 1){
                 let average_position = allpercentages[cid]
                 const fs = require('fs');
-                fs.appendFileSync('../node/output/img/trackobstacles'+process.argv[2]+'/position.txt', average_position+"\n");
+                fs.appendFileSync('../node/output/img/onlyobstacles15x15/position.txt', average_position+"\n");
                 console.log(average_position)
             }
         }
@@ -96,18 +96,18 @@ function initializeGrid(){
     // add the initializer if not already there
     if( !this.helpClasses["gm"] ){ this.addGridManipulator() }
     
-    // Seed 1 moving cell with tracking
-    this.gm.seedCellAt(1, [this.C.extents[1]/2 + 35, this.C.extents[1]/2 +35] )
-    // Seed 1 moving cellwithout tracking
-    let cellstomake = 1000
-    while (cellstomake>0){
-        this.gm.seedCellAt(2, [getRandomInt(500), getRandomInt(500)] )
-        cellstomake-=1
-    }
+    // // Seed 1 moving cell with tracking
+    // this.gm.seedCellAt(1, [this.C.extents[1]/2 + 35, this.C.extents[1]/2 +35] )
+    // // Seed 1 moving cellwithout tracking
+    // let cellstomake = 1000
+    // while (cellstomake>0){
+    //     this.gm.seedCellAt(2, [getRandomInt(500), getRandomInt(500)] )
+    //     cellstomake-=1
+    // }
 
     // Seed grid
-    let rows = 10
-	let cols = 10
+    let rows = 15
+	let cols = 15
 	for( var i = Math.floor((this.C.extents[0]/cols)/2) ; i < this.C.extents[0] ; i += Math.floor(this.C.extents[0]/cols) ){
 		for( var j = Math.floor((this.C.extents[1]/rows)/2) ; j < this.C.extents[1] ; j += Math.floor(this.C.extents[1]/rows) ){
 			for( let x = 0; x < 200; x+=20){
