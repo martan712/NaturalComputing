@@ -23,14 +23,14 @@ let config = {
         RUNTIME : 5000,
         CANVASCOLOR : "eaecef",
         CELLCOLOR : ["000000","000000", "CCCCCC"],
-        ACTCOLOR : [true,true,false],					
+        ACTCOLOR : [true,false,false],					
         SHOWBORDERS : [false,true,false],		
         BORDERCOL : ["DDDDDD","DDDDDD","DDDDDD","DDDDDD"],
         zoom :2,
         SAVEIMG : true,					// Should a png image of the grid be saved
                                             // during the simulation?
         IMGFRAMERATE : 100,					// If so, do this every <IMGFRAMERATE> MCS.
-        SAVEPATH : "../node/output/img/tracknoobstacles"+process.argv[2],	// ... And save the image in this folder.
+        SAVEPATH : "../node/output/img/trackobstacles15by15-track100"+process.argv[2],	// ... And save the image in this folder.
         EXPNAME : "trackposition",					// Used for the filename of output images.
         
         // Note that we set this to true for the browser to see the
@@ -78,13 +78,13 @@ class PercentageActive extends CPM.Stat {
 function logStats() {
         const allpercentages = this.C.getStat( PercentageActive )
         for( let cid of this.C.cellIDs() ){
-            if (cid == 1){
+            if (cid <= 101){
                 let average_position = allpercentages[cid]
                 const fs = require('fs');
-                fs.appendFileSync('../node/output/img/tracknoobstacles'+process.argv[2]+'/position.txt', average_position+"\n");
-                console.log(average_position)
+                fs.appendFileSync('../node/output/img/trackobstacles15by15-track100'+process.argv[2]+'/position'+cid+'.txt', average_position+"\n");
             }
         }
+        console.log("update")
 }
 
 function getRandomInt(max) {
@@ -99,15 +99,15 @@ function initializeGrid(){
     // Seed 1 moving cell with tracking
     this.gm.seedCellAt(1, [this.C.extents[1]/2 + 35, this.C.extents[1]/2 +35] )
     // Seed 1 moving cellwithout tracking
-    let cellstomake = 1000
+    let cellstomake = 100
     while (cellstomake>0){
         this.gm.seedCellAt(2, [getRandomInt(500), getRandomInt(500)] )
         cellstomake-=1
     }
 
     // Seed grid
-    let rows = 0
-	let cols = 0
+    let rows = 15
+	let cols = 15
 	for( var i = Math.floor((this.C.extents[0]/cols)/2) ; i < this.C.extents[0] ; i += Math.floor(this.C.extents[0]/cols) ){
 		for( var j = Math.floor((this.C.extents[1]/rows)/2) ; j < this.C.extents[1] ; j += Math.floor(this.C.extents[1]/rows) ){
 			for( let x = 0; x < 200; x+=20){
